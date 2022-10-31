@@ -9,9 +9,15 @@ int check_count_file (char input[100], int k_str);
 int flag_check(char input[100], int k_str);
 int GNU_flag_check(char input[100]);
 
-int main() {
+int main(int argc, char* argv[]) {
     char input[100];
-    fgets(input,100,stdin);
+    for(int i = 1; i < argc; i++){
+        strcat(input, argv[i]);
+        strcat(input, " ");
+    }
+    //printf("%s",input);
+    if (argc < 2)
+        fgets(input,100,stdin);
     do {
         if (func_choice(input) == 2) {
             printf("Unknown function\n");
@@ -37,7 +43,7 @@ void output_file(FILE *file, int flag) {
     int end = 1;
     int flag_out = flag;
     int i = 0;
-    int fl_b = 0, fl_E = 0, fl_n = 0, fl_s = 9, fl_T = 0, fl_e = 0, fl_t = 0;
+    int fl_b = 0, fl_E = 0, fl_n = 0, fl_s = 0, fl_T = 0, fl_e = 0, fl_t = 0;
         switch (flag_out)
         {
         case 1:
@@ -55,28 +61,28 @@ void output_file(FILE *file, int flag) {
         case 5:
             fl_T = 1;
             break;
-        // case 6:
-        //     fl_e = 1;
-        //     break;
-        // case 7:
-        //     fl_t = 1;
-        //     break;
+        case 6:
+            fl_e = 1;
+            break;
+        case 7:
+            fl_t = 1;
+            break;
         }
     int ch = 0;
     ch = 0;
     int first_empty = 0;
     int j = 0;
     while (end == 1) {
-            fgets(output, 250, file);
+            fgets(output, 250, file); 
             first_empty++;
-            if (output[0] == '\0'||(int)output[0]==1) {
-                end = 0;
+            if (output[0] == '\0'){//||(int)output[0]==1) {
+                end = 0; 
                 if (first_empty == 1)
                     ch = 1;
             }
             else {
                 if (fl_b == 1 && output[0] != '\n' && output[0] != '\0') {
-                    printf("%d ",schet);
+                    printf("%6d  ",schet);
                     schet++;
                 }
                 if (fl_n == 1 && output[0] != '\0') {
@@ -85,7 +91,7 @@ void output_file(FILE *file, int flag) {
                     }
                     schet++;
                 }
-                if(fl_E == 1) {
+                if(fl_E == 1 || fl_e == 1) {
                     i = 0;
                     while (output[i]!= '\0' && output[i]!='\n') {
                         i++;
@@ -99,7 +105,7 @@ void output_file(FILE *file, int flag) {
                     }
                 }
                 char sav_simb, sav_simb2;
-                if (fl_T == 1) {
+                if (fl_T == 1 || fl_t == 1) {
                     i=0;
                     while(output[i] != '\0' && output[i] != '\n'){
                         if ((int)output[i] == 9) {
@@ -120,14 +126,24 @@ void output_file(FILE *file, int flag) {
                         i++;
                     }
                 }
-                // if (fl_e == 1){
-
-                // }
-                // if (fl_t == 1){
-
-                // }
+                if (fl_e == 1|| fl_t == 1){
+                    //printf("4453");
+                    for (int y = 0;output[y]!='\0'; y++){
+                        if (output[y]>=0&&output[y]<32&&output[y]!=127&&output[y]!=10){
+                            printf("^");
+                            printf("%c",output[y]+64);
+                        }
+                        else if(output[y]==127){
+                            printf("^");
+                            printf("%c",63);
+                        }
+                        else{
+                            printf("%c",output[y]);
+                        }
+                    }
+                }
                 if (end == 1) {
-                    if (!(fl_s == 1 && output[0]=='\n'))
+                    if (!(fl_s == 1 && output[0]=='\n')&& fl_e != 1 &&fl_t != 1 )
                         printf("%s",output);
                 }
             }
@@ -169,10 +185,10 @@ int flag_check(char input[100], int k_str) {
         int_flag = 5;
         break;
     case 'e':
-        int_flag = 2;
+        int_flag = 6;
         break;
     case 't':
-        int_flag = 5;
+        int_flag = 7;
         break;
     case '-':
         int_flag = GNU_flag_check(input);
