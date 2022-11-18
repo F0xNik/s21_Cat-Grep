@@ -79,6 +79,7 @@ void parser(int argc, char* argv[], struct flags* flag){
                     patern = (char*)realloc(patern,count_patern*sizeof(char));
                     patern[count_patern-1]=argv[i][j];
                 }
+                strcat(patern,"\0");
                 count_patern++;
             }
             else if (argv[i][k]=='e' && argv[i][k+1]=='\0'){
@@ -91,6 +92,7 @@ void parser(int argc, char* argv[], struct flags* flag){
                 }
                 Buffer = (char*)realloc(Buffer, (strlen(Buffer)+strlen(argv[i]))*sizeof(char));
                 strcat(Buffer,argv[i]);
+                strcat(Buffer,"\0");
                 count_for_stick++;
                 }
             }
@@ -104,12 +106,13 @@ void parser(int argc, char* argv[], struct flags* flag){
                 }
                 Buffer = (char*)realloc(Buffer,(strlen(Buffer)+strlen(argv[i]))*sizeof(char));
                 strcat(Buffer,argv[i]);
+                strcat(Buffer,"\0");
                 count_for_stick++;
             }
             else{
                 Buffer_file = (char*)realloc(Buffer_file,(strlen(Buffer_file)+strlen(argv[i])+1)*sizeof(char));
                 strcat(Buffer_file,argv[i]);
-                strcat(Buffer_file," ");
+                strcat(Buffer_file," \0");
             }
         }
         if (count_patern > 0){
@@ -119,6 +122,7 @@ void parser(int argc, char* argv[], struct flags* flag){
             }
             Buffer = (char*)realloc(Buffer, (strlen(Buffer)+strlen(argv[i]))*sizeof(char));
             strcat(Buffer,patern);
+            strcat(Buffer,"\0");
         count_patern = 0;
         count_for_stick++;
         memset(patern, '\0', sizeof(char));
